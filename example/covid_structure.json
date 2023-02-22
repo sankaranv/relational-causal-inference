@@ -1,10 +1,58 @@
 {
     "self": [
-        [["town", "policy"], ["town", "prevalence"]]],
+        [
+            [
+                "town",
+                "policy"
+            ],
+            [
+                "town",
+                "prevalence"
+            ]
+        ]
+    ],
     "contains": [
-        [["state", "policy"], ["town", "policy"]],
-        [["state", "policy"], ["town", "prevalence"]]],
+        [
+            [
+                "state",
+                "policy"
+            ],
+            [
+                "town",
+                "prevalence"
+            ]
+        ],
+        [
+            [
+                "state",
+                "policy"
+            ],
+            [
+                "town",
+                "policy"
+            ]
+        ]
+    ],
     "resides": [
-        [["town", "policy"], ["business", "occupancy"]],
-        [["business", "occupancy"], ["town", "prevalence"]]]
+        [
+            [
+                "town",
+                "policy"
+            ],
+            [
+                "business",
+                "occupancy"
+            ]
+        ],
+        [
+            [
+                "business",
+                "occupancy"
+            ],
+            [
+                "town",
+                "prevalence"
+            ]
+        ]
+    ]
 }

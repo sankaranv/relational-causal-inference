@@ -1,8 +1,8 @@
 {
     "entity_classes": [
         "town",
-        "business",
-        "state"
+        "state",
+        "business"
     ],
     "relationship_classes": [
         "resides",

@@ -10,7 +10,7 @@ class RelationalSchema:
     def empty_schema(self):
 
         self.entity_classes = set() # each entry is a name
-        self.relationship_classes = set() # each entry is a dict with keys left and right
+        self.relationship_classes = set() # each entry is a name
         self.attribute_classes = {} # each key is an entity/relationship class and each value is a set of attribute names
         self.cardinality = {} # each key is [relationship class][entity class] and value is 'one' or 'many'
         self.relations = {} # each key is a relationship class and value is an (entity class, entity class) tuple 
@@ -69,7 +69,7 @@ class RelationalSchema:
             print(f"Relation type {relation_type} is not valid, should be in {valid_relation_types}")
         
         else:
-            self.relations[relation] = [entity_from, entity_to]
+            self.relations[relation] = (entity_from, entity_to)
             self.relationship_classes.add(relation)
             self.cardinality[relation] = {
                                           entity_from: relation_type.lower().split('_')[0], 
