@@ -5,6 +5,6 @@ import numpy as np
 import pandas as pd
 import networkx as nx
 
-CausalEdge = namedtuple('CausalEdge', 'parent child')
-RelationalNode = namedtuple('RelationalNode', 'entity attribute')
+Edge = namedtuple('Edge', 'parent child')
+Node = namedtuple('Node', 'entity attribute')
 InstanceNode = namedtuple('InstanceNode', 'entity attribute instance')
