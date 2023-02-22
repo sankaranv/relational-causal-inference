@@ -22,10 +22,10 @@ class RelationalSchema:
         self.entity_classes.add(entity_name)
         self.attribute_classes[entity_name] = set()
         if attributes is not None:
-            if isinstance(a, list):
-                self.attribute_classes.update(attributes)
+            if isinstance(attributes, list):
+                self.attribute_classes[entity_name].update(attributes)
             elif isinstance(attributes, str):
-                self.attribute_classes.add(attributes)
+                self.attribute_classes[entity_name].add(attributes)
             else:
                 print("Attributes should be a list or single str")
         
@@ -36,10 +36,10 @@ class RelationalSchema:
         if entity_name not in self.entity_classes:
             print(f"Entity {entity_name} is not in the relational schema")
         else:
-            if isinstance(a, list):
-                self.attribute_classes.update(attributes)
+            if isinstance(attributes, list):
+                self.attribute_classes[entity_name].update(attributes)
             elif isinstance(attributes, str):
-                self.attribute_classes.add(attributes)
+                self.attribute_classes[entity_name].add(attributes)
             else:
                 print("Attributes should be a list or single str") 
 
@@ -107,15 +107,22 @@ class RelationalSchema:
 
     def save_to_file(self, path_to_json):
         if self.is_valid_schema():
+
+            # Convert sets to lists for JSON serialization
+            attribute_classes = {}
+            for entity in self.attribute_classes:
+                attribute_classes[entity] = list(self.attribute_classes[entity])
+
+            
             schema_dict = {
                 "entity_classes": list(self.entity_classes),
                 "relationship_classes": list(self.relationship_classes),
-                "attribute_classes": self.attribute_classes,
+                "attribute_classes": attribute_classes,
                 "cardinality": self.cardinality,
                 "relations": self.relations
             }
             with open(path_to_json, 'w') as f:
-                json.dump(schema_dict, f)
+                json.dump(schema_dict, f, indent=4)
         else:
             print("Schema is invalid, could not write to file")
 
@@ -123,4 +130,16 @@ if __name__ == "__main__":
     
     # Create relational schema
     schema = RelationalSchema()
-    schema.load_from_file('example/covid_schema.json')
+    schema.add_entity("state", "policy")
+    schema.add_entity("town", ["prevalence", "policy"])
+    schema.add_entity("business")
+    schema.add_attribute("business", "occupancy")
+    schema.add_relation("contains", "state", "town", "one_to_many")
+    schema.add_relation("resides", "town", "business", "one_to_many")
+    print(f"Checking if schema is valid: {schema.is_valid_schema()}")
+    print(f"Entities: {schema.entity_classes}")
+    print(f"Relationships: {schema.relationship_classes}")
+    print(f"Attributes: {schema.attribute_classes}")
+    print(f"Cardinality: {schema.cardinality}")
+    print(f"Relations: {schema.relations}")
+    schema.save_to_file('example/covid_schema.json')
