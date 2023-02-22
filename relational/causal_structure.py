@@ -1,11 +1,5 @@
 import json
-from collections import namedtuple 
-import torch
-import numpy as np
-import pandas as pd
-import networkx as nx
-
-from utils import RelationalNode, CausalEdge
+from utils import Node, Edge
 
 class RelationalCausalStructure:
     """
@@ -18,17 +12,20 @@ class RelationalCausalStructure:
         self.parents = {}
         self.incoming_edges = self.create_incoming_edges_dict()
 
+    def add_edge(self, relation, node_from, node_to):
+        pass
+
     def load_edges_from_file(self, path_to_json):
         with open(path_to_json, 'r') as f:
             self.edges = json.load(f)
         for relation in self.edges:
             for idx, edge_list in enumerate(self.edges[relation]):
                 # Convert list representation of node from JSON to named tuple
-                self.edges[relation][idx] = [RelationalNode(*node) for node in self.edges[relation][idx]]
+                self.edges[relation][idx] = [Node(*node) for node in self.edges[relation][idx]]
                 # Add nodes to node list
                 self.nodes.update(self.edges[relation][idx])   
                 # Convert list representation of edge to named tuple
-                self.edges[relation][idx] = CausalEdge(*self.edges[relation][idx])
+                self.edges[relation][idx] = Edge(*self.edges[relation][idx])
                 # Update parents dict
                 edge = self.edges[relation][idx]
                 if edge.child not in self.parents:
