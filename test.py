@@ -52,7 +52,7 @@ if __name__ == "__main__":
 
     # Create SCM
     scm = RelationalSCM()
-    scm.load_structure(structure)
+    scm.create_from_structure(structure)
     intervened_scm = scm.intervene("town_policy", 10)
     print(intervened_scm.functions)
     intervened_scm.intervene_("town_prevalence", 20)

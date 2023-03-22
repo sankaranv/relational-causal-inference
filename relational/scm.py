@@ -26,7 +26,7 @@ class RelationalSCM:
             for node, parents in scm["functions"]:
                 self.functions[node] = set(parents)
 
-    def load_structure(self, structure: RelationalCausalStructure):
+    def create_from_structure(self, structure: RelationalCausalStructure):
         """ Build a relational SCM from a given relational causal structure
 
         Args:
@@ -55,7 +55,7 @@ class RelationalSCM:
         Returns:
             str: name of the node
         """
-        return f"{node.entity}_{node.attribute}"
+        return f"{node.entity}.{node.attribute}"
 
     def intervene(self, node_name: str, value: float):
         """ Return a new SCM with the given node set to the given value and all parents removed
