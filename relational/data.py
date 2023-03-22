@@ -22,7 +22,7 @@ class RelationalSkeleton:
     def get_instance_type(self, instance):
         return self.instance_type[instance]
 
-    def load_from_file(self, schema, path_to_json):
+    def load(self, schema, path_to_json):
         with open(path_to_json, 'r') as f:
             skeleton_dict = json.load(f)
         self.entity_instances = skeleton_dict["entity_instances"]
@@ -37,7 +37,7 @@ class RelationalSkeleton:
             print("Skeleton is invalid for the given schema, could not load from file")
             self.empty_skeleton(schema)
 
-    def save_to_file(self, schema, path_to_json):
+    def save(self, schema, path_to_json):
         if self.is_valid_skeleton(schema):
             skeleton_dict = {
                 "entity_instances": self.entity_instances,

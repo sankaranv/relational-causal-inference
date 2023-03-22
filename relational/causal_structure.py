@@ -1,6 +1,6 @@
 import json
-from utils import Node, Edge
-from schema import RelationalSchema
+from relational.utils import Node, Edge
+from relational.schema import RelationalSchema
 
 class RelationalCausalStructure:
     """
@@ -49,9 +49,10 @@ class RelationalCausalStructure:
             print(f"Attribute {node_to.attribute} of entity {node_to.entity} not in schema")
 
         # Check if relations are valid
-        elif relation.lower() == "self" and node_from.entity != node_to.entity:
-            print(f"Self relation between {node_from.entity} and {node_to.entity} is not possible")
-        elif node_from.entity not in self.schema.relations[relation] or node_to.entity not in self.schema.relationships[relation]:
+        elif relation.lower() == "self":
+            if node_from.entity != node_to.entity:
+                print(f"Self relation between {node_from.entity} and {node_to.entity} is not possible")
+        elif node_from.entity not in self.schema.relations[relation] or node_to.entity not in self.schema.relations[relation]:
             print(f"Relation {relation} not valid between {node_from.entity} and {node_to.entity}")
 
         else:
@@ -68,7 +69,7 @@ class RelationalCausalStructure:
                 self.parents[node_from] = set()
             self.parents[node_to].add(node_from)
 
-    def load_edges_from_file(self, path_to_json):
+    def load(self, path_to_json):
         """Loads edge set from a JSON file
 
         Args:
@@ -93,7 +94,7 @@ class RelationalCausalStructure:
                 if edge.parent not in self.parents:
                     self.parents[edge.parent] = []
 
-    def save_edges_to_file(self, path_to_json):
+    def save(self, path_to_json: str):
         """Saves edge set to a JSON file
 
         Args:
@@ -133,22 +134,3 @@ class RelationalCausalStructure:
         Get the list of incoming edges to an attribute of an entity
         """
         return self.incoming_edges[entity_name][attribute_name]
-
-if __name__ == "__main__":
-    schema = RelationalSchema()
-    schema.load_from_file('example/covid_schema.json')
-    structure = RelationalCausalStructure(schema)
-
-    # Create structure from COVID example in dissertation draft
-    structure.add_edge("self", ("town", "policy"), ("town", "prevalence"))
-    structure.add_edge("contains", ("state", "policy"), ("town", "policy"))
-    structure.add_edge("contains", ("state", "policy"), ("town", "prevalence"))
-    structure.add_edge("resides", ("town", "policy"), ("business", "occupancy"))
-    structure.add_edge("resides", ("business", "occupancy"), ("town", "prevalence"))
-    
-    # Check parents
-    for node in structure.parents:
-        print(tuple(node), list([tuple(x) for x in structure.parents[node]]))
-
-    # Save to file
-    structure.save_edges_to_file('example/covid_structure.json')

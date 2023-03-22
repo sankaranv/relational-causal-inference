@@ -89,7 +89,7 @@ class RelationalSchema:
                         return False
         return True
 
-    def load_from_file(self, path_to_json):
+    def load(self, path_to_json):
         with open(path_to_json, 'r') as f:
             schema_dict = json.load(f)
         self.entity_classes = set(schema_dict["entity_classes"])
@@ -105,7 +105,7 @@ class RelationalSchema:
             print("Schema is invalid, could not load from file")
             self.empty_schema()
 
-    def save_to_file(self, path_to_json):
+    def save(self, path_to_json):
         if self.is_valid_schema():
 
             # Convert sets to lists for JSON serialization
@@ -125,21 +125,3 @@ class RelationalSchema:
                 json.dump(schema_dict, f, indent=4)
         else:
             print("Schema is invalid, could not write to file")
-
-if __name__ == "__main__":
-    
-    # Create relational schema
-    schema = RelationalSchema()
-    schema.add_entity("state", "policy")
-    schema.add_entity("town", ["prevalence", "policy"])
-    schema.add_entity("business")
-    schema.add_attribute("business", "occupancy")
-    schema.add_relation("contains", "state", "town", "one_to_many")
-    schema.add_relation("resides", "town", "business", "one_to_many")
-    print(f"Checking if schema is valid: {schema.is_valid_schema()}")
-    print(f"Entities: {schema.entity_classes}")
-    print(f"Relationships: {schema.relationship_classes}")
-    print(f"Attributes: {schema.attribute_classes}")
-    print(f"Cardinality: {schema.cardinality}")
-    print(f"Relations: {schema.relations}")
-    schema.save_to_file('example/covid_schema.json')

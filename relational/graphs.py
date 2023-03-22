@@ -1,9 +1,9 @@
 import networkx as nx
 import pandas as pd
 
-from causal_structure import RelationalCausalStructure
-from data import RelationalSkeleton
-from utils import InstanceNode
+from relational.causal_structure import RelationalCausalStructure
+from relational.data import RelationalSkeleton
+from relational.utils import InstanceNode
 
 def create_adj_mat_dict(structure: RelationalCausalStructure, skeleton: RelationalSkeleton) -> dict:
     """ Creates adjacency matrices based on the relational skeleton

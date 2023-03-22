@@ -1,14 +1,37 @@
-from causal_structure import RelationalCausalStructure
-from schema import RelationalSchema
+from relational.causal_structure import RelationalCausalStructure
+from relational.schema import RelationalSchema
 from typing import Any
 from copy import deepcopy
+import json
 
 class RelationalSCM:
 
-    def __init__(self, structure: RelationalCausalStructure) -> None:
+    def __init__(self) -> None:
 
-        # Save relational causal structure
-        self.structure = structure
+        self.observed_nodes = set()
+        self.unobserved_nodes = set()
+        self.functions = {}
+
+    def load(self, path_to_json: str):
+        """Load an SCM from file
+
+        Args:
+            path_to_json (str): path to the JSON file
+        """
+        with open(path_to_json) as f:
+            scm = json.load(f)
+            self.observed_nodes = set(scm["observed_nodes"])
+            self.unobserved_nodes = set(scm["unobserved_nodes"])
+            self.functions = {}
+            for node, parents in scm["functions"]:
+                self.functions[node] = set(parents)
+
+    def load_structure(self, structure: RelationalCausalStructure):
+        """ Build a relational SCM from a given relational causal structure
+
+        Args:
+            structure (RelationalCausalStructure): causal structure to load
+        """
 
         # Create set of symbols (strings) for each node in structure
         self.observed_nodes = set([self.get_name_from_node(node) for node in structure.nodes])
@@ -66,16 +89,19 @@ class RelationalSCM:
         # Remove all parents of the given node and only assign the given value
         self.functions[node_name] = set([value])
 
-if __name__ == "__main__":
+    def save(self, path_to_json: str):
+        """ Save the SCM to a json file
 
-    # Load schema and structure
-    schema = RelationalSchema()
-    schema.load_from_file('example/covid_schema.json')
-    structure = RelationalCausalStructure(schema)
-    structure.load_edges_from_file('example/covid_structure.json')
+        Args:
+            path_to_json (str): path to the json file
+        """
+        scm_dict = {}
+        scm_dict["observed_nodes"] = list(self.observed_nodes)
+        scm_dict["unobserved_nodes"] = list(self.unobserved_nodes)
+        scm_functions = {}
+        for node, parents in self.functions.items():
+            scm_functions[node] = list(parents)
+        scm_dict["functions"] = scm_functions
 
-    # Create SCM
-    scm = RelationalSCM(structure)
-    intervened_scm = scm.intervene("town_policy", 10)
-    print(intervened_scm.functions)
-    intervened_scm.intervene_("town_prevalence", 20)
+        with open(path_to_json, 'w') as f:
+            json.dump(scm_dict, f, indent=4)

@@ -1,16 +1,4 @@
 {
-    "self": [
-        [
-            [
-                "town",
-                "policy"
-            ],
-            [
-                "town",
-                "prevalence"
-            ]
-        ]
-    ],
     "contains": [
         [
             [
