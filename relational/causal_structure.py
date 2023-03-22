@@ -1,7 +1,6 @@
 import json
-
 from utils import Node, Edge
-from  schema import RelationalSchema
+from schema import RelationalSchema
 
 class RelationalCausalStructure:
     """
