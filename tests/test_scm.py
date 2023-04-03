@@ -1,4 +1,4 @@
-from .relational import *
+from ..relational import *
 
 if __name__ == "__main__":
 
