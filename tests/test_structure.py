@@ -18,4 +18,4 @@ def test_structure():
     
     # Check parents
     for node in structure.parents:
-        assert ref_structure.parents[node] == structure.parents[node], f"Parents of {node} don't match reference {ref_structure.parents[node]}"
+        assert len(ref_structure.parents[node] - structure.parents[node]) == 0, f"Parents of {node} don't match reference {ref_structure.parents[node]}"

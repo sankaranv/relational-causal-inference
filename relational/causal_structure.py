@@ -88,11 +88,13 @@ class RelationalCausalStructure:
                 # Update parents dict
                 edge = self.edges[relation][idx]
                 if edge.child not in self.parents:
-                    self.parents[edge.child] = [edge.parent]
+                    self.parents[edge.child] = set([edge.parent])
                 else:
-                    self.parents[edge.child].append(edge.parent)
+                    self.parents[edge.child].add(edge.parent)
                 if edge.parent not in self.parents:
-                    self.parents[edge.parent] = []
+                    self.parents[edge.parent] = set()
+            # Convert list of edges to set
+            self.edges[relation] = set(self.edges[relation])
 
     def save(self, path_to_json: str):
         """Saves edge set to a JSON file
