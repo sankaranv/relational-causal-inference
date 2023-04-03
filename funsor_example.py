@@ -1,12 +1,12 @@
 from collections import OrderedDict
 
 import torch
-# import funsor
-# from funsor.domains import reals, bint
-# from funsor.gaussian import Gaussian
-# from funsor.terms import Variable
-# from funsor.torch import Tensor
-# from funsor.ops import add, logaddexp
+import funsor
+from funsor.domains import reals, bint
+from funsor.gaussian import Gaussian
+from funsor.terms import Variable
+from funsor.torch import Tensor
+from funsor.ops import add, logaddexp
 
 import pyro.distributions as dist
 from pyro.distributions import constraints
