@@ -1,4 +1,4 @@
-from ..relational import *
+from .relational import *
 
 def test_schema():
 
