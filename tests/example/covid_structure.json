@@ -1,0 +1,46 @@
+{
+    "contains": [
+        [
+            [
+                "state",
+                "policy"
+            ],
+            [
+                "town",
+                "prevalence"
+            ]
+        ],
+        [
+            [
+                "state",
+                "policy"
+            ],
+            [
+                "town",
+                "policy"
+            ]
+        ]
+    ],
+    "resides": [
+        [
+            [
+                "town",
+                "policy"
+            ],
+            [
+                "business",
+                "occupancy"
+            ]
+        ],
+        [
+            [
+                "business",
+                "occupancy"
+            ],
+            [
+                "town",
+                "prevalence"
+            ]
+        ]
+    ]
+}
